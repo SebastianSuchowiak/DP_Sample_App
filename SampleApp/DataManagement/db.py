@@ -1,14 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-
-
-db = SQLAlchemy()
-
-def db_init(app):
-    db.app = app
-    db.init_app(app)
-    db.create_all()
-    db.session.commit()
+from SampleApp import db
 
 
 class User(db.Model):
@@ -65,3 +56,4 @@ class Address(db.Model):
     postal_code = db.Column(db.String)
 
     employee = db.relationship("Employee", uselist=False, back_populates="address")
+
