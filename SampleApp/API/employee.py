@@ -1,3 +1,5 @@
+from flask_login import login_required
+
 from SampleApp.DataManagement.db import Employee
 from SampleApp.DataManagement.serialization import EmployeeSchema
 from SampleApp.DataManagement.db import db
@@ -17,6 +19,7 @@ def add_employee():
 
 
 @bp.route('/employees', methods=['GET'])
+@login_required
 def get_employees():
     employees = Employee.query.all()
     serialized_employee = EmployeeSchema(many=True).dump(employees)
@@ -26,6 +29,5 @@ def get_employees():
 @bp.route('/employee/<int:id>', methods=['GET'])
 def get_role(id):
     employee = Employee.query.filter_by(id=id).first()
-    print(employee)
     serialized_employee = EmployeeSchema().dump(employee)
     return serialized_employee

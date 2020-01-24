@@ -10,7 +10,6 @@ login_manager = LoginManager()
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
 
-
     DB_USER = 'server'
     DB_PASSWORD = '123'
     DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@localhost/projekt_test'
@@ -26,12 +25,13 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
-
     db_init(app)
-
 
     from SampleApp.API import employee
     app.register_blueprint(employee.bp)
+
+    from SampleApp.API import login
+    app.register_blueprint(login.bp)
 
     login_manager_init(app)
 
@@ -53,3 +53,4 @@ def db_init(app):
 def login_manager_init(app):
     print('login_manager_init')
     login_manager.init_app(app)
+    from SampleApp.TokenLoginManager import token_login_manager
