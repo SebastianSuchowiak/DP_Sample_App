@@ -1,0 +1,4 @@
+./SampleApp/API/__pycache__/*
+./SampleApp/DataManagement/__pycache__/*
+./SampleApp/TokenLoginManager/__pycache__/*
+./SampleApp/__pycache__/*
