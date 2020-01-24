@@ -1,3 +1,4 @@
+from itsdangerous import TimestampSigner, URLSafeSerializer
 from werkzeug.security import generate_password_hash, check_password_hash
 from SampleApp import db
 
@@ -28,7 +29,14 @@ class User(db.Model):
         return True
 
     def get_id(self):
-        return self.username
+        signer = TimestampSigner('secret-key')
+        token = signer.sign(self.username).decode('utf-8')
+        serializer = URLSafeSerializer('secret-key')
+        serialized_token = serializer.dumps(token)
+        return serialized_token
+
+    def __str__(self):
+        return f'username: {self.username}'
 
 
 class Employee(db.Model):

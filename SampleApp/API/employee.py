@@ -1,4 +1,4 @@
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from SampleApp.DataManagement.db import Employee
 from SampleApp.DataManagement.serialization import EmployeeSchema
@@ -8,13 +8,13 @@ from flask import (
 )
 import logging
 
-
 bp = Blueprint('employee', __name__, url_prefix='/employee')
 
 
 @bp.route('/add_employee', methods=['POST'])
 def add_employee():
     logging.debug('add_employee()\nInput JSON: {}'.format(request.json))
+
     new_employee = EmployeeSchema().load(request.json)
     db.session.add(new_employee)
     db.session.commit()

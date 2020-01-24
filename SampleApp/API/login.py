@@ -1,12 +1,15 @@
 import json
+from functools import partial
 
-from flask_login import login_user
-from itsdangerous import Signer, BadSignature
+from flask.globals import _lookup_req_object
+from flask_login import login_user, login_required, logout_user
+from itsdangerous import TimestampSigner, BadSignature, URLSafeSerializer, SignatureExpired
+from werkzeug.local import LocalProxy
 
 from SampleApp.DataManagement.db import User
 from SampleApp import db, login_manager
 from flask import (
-    Blueprint, request, Response
+    Blueprint, request, Response, session
 )
 
 from SampleApp.DataManagement.serialization import UserSchema
@@ -20,23 +23,26 @@ def login():
     password = request.json['password']
     user = User.query.filter_by(username=username).first()
 
-    if user.check_password(password):
+    if user is None:
+        return Response(
+            response=json.dumps({'message': 'user does not exists'}),
+            status=401,
+            mimetype='application/json'
+        )
+    elif user.check_password(password):
         login_user(user)
-        signer = Signer('secret-key')
-        token = signer.sign(username)
 
         return Response(
-            response=json.dumps({'message': 'authentication successful',
-                                 'token': str(token)}),
+            response=json.dumps({'message': 'authentication successful'}),
             status=201,
             mimetype='application/json'
         )
-
-    return Response(
-        response=json.dumps({'message': 'authentication failed'}),
-        status=401,
-        mimetype='application/json'
-    )
+    else:
+        return Response(
+            response=json.dumps({'message': 'authentication failed'}),
+            status=401,
+            mimetype='application/json'
+        )
 
 
 @bp.route('/register', methods=['POST'])
@@ -60,14 +66,54 @@ def register():
     return {'username': new_user.username}
 
 
-@login_manager.request_loader
-def load_user_from_request(request):
-    token = request.args.get('token')
-    signer = Signer('secret-key')
+@bp.route('/logout', methods=['POST'])
+@login_required
+def logout():
     try:
-        print(token)
-        username = signer.unsign(token)
+        logout_user()
+        return Response(
+            response=json.dumps({'message': 'logout successful'}),
+            status=200,
+            mimetype='application/json'
+        )
+    except Exception:
+        return Response(
+            response=json.dumps({'message': 'logout went wrong'}),
+            status=404,
+            mimetype='application/json'
+        )
+
+
+@login_manager.user_loader
+def load_user(token):
+
+    print(token)
+    serializer = URLSafeSerializer('secret-key')
+    serialized_token = serializer.loads(token)
+
+    signer = TimestampSigner('secret-key')
+    try:
+        username = signer.unsign(serialized_token, max_age=10)
+    except SignatureExpired:
+        session['failed_authentication_cause'] = 'token expired'
+        return None
     except BadSignature:
+        session['failed_authentication_cause'] = 'unauthorized token'
         return None
 
-    return  User.query.filter_by(username=username).first()
+    user = User.query.filter_by(username=username.decode('utf-8')).first()
+    return user
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    ses = LocalProxy(partial(_lookup_req_object, "session"))
+    print(ses['failed_authentication_cause'])
+    message = f'failed to authorize: {session["failed_authentication_cause"]}'
+    return Response(
+            response=json.dumps({'message': 'token expired'}),
+            status=401,
+            mimetype='application/json'
+        )
+
+

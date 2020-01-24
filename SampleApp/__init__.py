@@ -34,7 +34,6 @@ def create_app(test_config=None):
 
     db_init(app)
 
-
     from SampleApp.API import employee, salary, address
     app.register_blueprint(employee.bp)
     app.register_blueprint(salary.bp)
@@ -63,4 +62,3 @@ def db_init(app):
 def login_manager_init(app):
     print('login_manager_init')
     login_manager.init_app(app)
-    from SampleApp.TokenLoginManager import token_login_manager
