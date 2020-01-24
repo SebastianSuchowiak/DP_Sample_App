@@ -3,5 +3,5 @@
 ./SampleApp/TokenLoginManager/__pycache__/*
 ./SampleApp/__pycache__/*
 ./SampleApp/API/__pycache__/*
-./venv/*
-./SampleApp/logs/*
+*.log
+/venv/
