@@ -4,6 +4,7 @@ from SampleApp.DataManagement.db import db
 from flask import (
     Blueprint, request, jsonify
 )
+import logging
 
 
 bp = Blueprint('address', __name__, url_prefix='/address')
