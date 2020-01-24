@@ -1,10 +1,11 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-
+from acl_orm.SQLinterceptor import SQLinterceptor
 
 db = SQLAlchemy()
 login_manager = LoginManager()
+sqlinterceptor = SQLinterceptor()
 
 
 def create_app(test_config=None):
@@ -48,7 +49,7 @@ def db_init(app):
     db.init_app(app)
     db.create_all()
     db.session.commit()
-
+    sqlinterceptor.start(db,tree_file="sampleroles.txt")
 
 def login_manager_init(app):
     print('login_manager_init')
