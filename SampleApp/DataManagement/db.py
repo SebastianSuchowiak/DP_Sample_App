@@ -39,7 +39,6 @@ class Employee(db.Model):
     email = db.Column(db.String(100))
     phone = db.Column(db.String(100))
     position = db.Column(db.String(100))
-    row_permission = db.Column(db.String(100))
 
     address = db.relationship("Address", uselist=False, back_populates="employee")
     salary = db.relationship("Salary", uselist=False, back_populates="employee")
@@ -52,7 +51,6 @@ class Salary(db.Model):
     basic_salary = db.Column(db.Float)
     bonus = db.Column(db.Float)
     penalty = db.Column(db.Float)
-    row_permission = db.Column(db.String(100))
 
     employee = db.relationship("Employee", uselist=False, back_populates="salary")
 

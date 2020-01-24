@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+import logging
+import os
 
 
 db = SQLAlchemy()
@@ -10,7 +12,12 @@ login_manager = LoginManager()
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
 
-    DB_USER = 'server'
+    if not os.path.exists(os.getcwd()+"/SampleApp/logs"):
+        os.mkdir(os.getcwd()+"/SampleApp/logs")
+    logging.basicConfig(filename='SampleApp/logs/app.log', filemode='w', level=logging.DEBUG, format='[%(asctime)s] - [%(levelname)s] - %(message)s')
+    logging.debug("Application started")
+
+    DB_USER = 'postgres'
     DB_PASSWORD = '123'
     DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@localhost/projekt_test'
 
@@ -27,8 +34,11 @@ def create_app(test_config=None):
 
     db_init(app)
 
-    from SampleApp.API import employee
+
+    from SampleApp.API import employee, salary, address
     app.register_blueprint(employee.bp)
+    app.register_blueprint(salary.bp)
+    app.register_blueprint(address.bp)
 
     from SampleApp.API import login
     app.register_blueprint(login.bp)
