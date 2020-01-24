@@ -1,7 +1,15 @@
 from flask import Flask
+from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
+
+
+db = SQLAlchemy()
+login_manager = LoginManager()
+
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
+
 
     DB_USER = 'postgres'
     DB_PASSWORD = '123'
@@ -18,14 +26,14 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
-    from SampleApp.DataManagement import db
-    db.db_init(app)
+
+    db_init(app)
+
 
     from SampleApp.API import employee
     app.register_blueprint(employee.bp)
 
-    from SampleApp.TokenLoginManager import token_login_manager
-    token_login_manager.login_manager_init(app)
+    login_manager_init(app)
 
     @app.route('/hello')
     def hello():
@@ -34,3 +42,14 @@ def create_app(test_config=None):
     return app
 
 
+def db_init(app):
+    print('db_init')
+    db.app = app
+    db.init_app(app)
+    db.create_all()
+    db.session.commit()
+
+
+def login_manager_init(app):
+    print('login_manager_init')
+    login_manager.init_app(app)

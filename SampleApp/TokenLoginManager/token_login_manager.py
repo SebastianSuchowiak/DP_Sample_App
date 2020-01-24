@@ -1,15 +1,7 @@
 from flask_login import LoginManager
 from itsdangerous import Signer, BadSignature
 from SampleApp.DataManagement.db import User
-
-
-login_manager = LoginManager()
-
-def login_manager_init(app):
-    login_manager.init_app(app)
-    users = User.query.all()
-    print(users)
-    print('twój stary')
+from SampleApp import login_manager
 
 
 @login_manager.request_loader
