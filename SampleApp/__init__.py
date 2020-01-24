@@ -3,6 +3,9 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from acl_orm.SQLinterceptor import SQLinterceptor
 
+
+
+
 db = SQLAlchemy()
 login_manager = LoginManager()
 sqlinterceptor = SQLinterceptor()
@@ -10,6 +13,11 @@ sqlinterceptor = SQLinterceptor()
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
+
+    if not os.path.exists(os.getcwd()+"/SampleApp/logs"):
+        os.mkdir(os.getcwd()+"/SampleApp/logs")
+    logging.basicConfig(filename='SampleApp/logs/app.log', filemode='w', level=logging.DEBUG, format='[%(asctime)s] - [%(levelname)s] - %(message)s')
+    logging.debug("Application started")
 
 
     DB_USER = 'postgres'
@@ -31,8 +39,10 @@ def create_app(test_config=None):
     db_init(app)
 
 
-    from SampleApp.API import employee
+    from SampleApp.API import employee, salary, address
     app.register_blueprint(employee.bp)
+    app.register_blueprint(salary.bp)
+    app.register_blueprint(address.bp)
 
     login_manager_init(app)
 

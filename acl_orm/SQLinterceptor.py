@@ -19,15 +19,16 @@ from functools import partial
 curent_user = None
 
 class SQLinterceptor():
-  class ACL(db.Model):
-    __tablename__ = 'acl'
-    __table_args__ = {'extend_existing': True} 
-    id = db.Column(db.Integer, primary_key=True)
-    id_row = db.Column(db.Integer)
-    role = db.Column(db.String, nullable=False)      
-    tablename = db.Column(db.String, nullable = False)
+  
   def start(self,db,tree_file = None):
     self.db = db
+    class ACL(db.Model):
+      __tablename__ = 'acl'
+      __table_args__ = {'extend_existing': True} 
+      id = db.Column(db.Integer, primary_key=True)
+      id_row = db.Column(db.Integer)
+      role = db.Column(db.String, nullable=False)      
+      tablename = db.Column(db.String, nullable = False)
     class Roles(db.Model):
       __tablename__ = 'roles'
       __table_args__ = {'extend_existing': True} 
@@ -48,9 +49,9 @@ class SQLinterceptor():
     
     num_rows_deleted = db.session.query(Roles).delete()
     db.session.commit()
-
+    
     self.select_user("Role2")
-
+    self.acl = ACL
   def tree_from_db(self):
     roles = self.Roles.query.all()
 
