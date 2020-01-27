@@ -1,11 +1,2 @@
-[2020-01-24 05:15:43,249] - [DEBUG] - Application started
-[2020-01-24 05:15:44,209] - [DEBUG] - get_addresses()
-[2020-01-24 05:15:44,222] - [INFO] - 127.0.0.1 - - [24/Jan/2020 05:15:44] "GET /address/addresses HTTP/1.1" 200 -
-[2020-01-24 05:15:56,604] - [DEBUG] - get_salaries()
-[2020-01-24 05:15:56,608] - [INFO] - 127.0.0.1 - - [24/Jan/2020 05:15:56] "GET /salary/salaries HTTP/1.1" 200 -
-[2020-01-24 05:16:58,479] - [DEBUG] - get_salaries()
-[2020-01-24 05:16:58,482] - [INFO] - 127.0.0.1 - - [24/Jan/2020 05:16:58] "GET /salary/salaries HTTP/1.1" 200 -
-[2020-01-24 05:17:18,171] - [DEBUG] - add_salary()
-Input JSON: {'basic_salary': '2500.0', 'bonus': '300.0', 'employee_id': 123, 'penalty': '200.0'}
-[2020-01-24 05:17:18,175] - [ERROR] - {"message": "Employee with id 123 already has a salary assigned"}
-[2020-01-24 05:17:18,176] - [INFO] - 127.0.0.1 - - [24/Jan/2020 05:17:18] "POST /salary/add_salary HTTP/1.1" 409 -
+[2020-01-24 14:54:04,838] - [DEBUG] - Application started
+[2020-01-24 14:54:19,311] - [INFO] - 127.0.0.1 - - [24/Jan/2020 14:54:19] "GET /employee/employees HTTP/1.1" 401 -

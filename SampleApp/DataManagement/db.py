@@ -1,3 +1,4 @@
+from itsdangerous import TimestampSigner, URLSafeSerializer
 from werkzeug.security import generate_password_hash, check_password_hash
 from SampleApp import db
 
@@ -11,13 +12,31 @@ class User(db.Model):
     created_on = db.Column(db.DateTime, index=False, unique=False, nullable=True)
     last_login = db.Column(db.DateTime, index=False, unique=False, nullable=True)
 
-    def set_password(self, password):
-        self.password = generate_password_hash(password, method='sha256')
+    @staticmethod
+    def generate_password(password):
+        return generate_password_hash(password, method='sha256')
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+    def is_anonymous(self):
+        return False
 
+    def is_active(self):
+        return True
+
+    def is_authenticated(self):
+        return True
+
+    def get_id(self):
+        signer = TimestampSigner('secret-key')
+        token = signer.sign(self.username).decode('utf-8')
+        serializer = URLSafeSerializer('secret-key')
+        serialized_token = serializer.dumps(token)
+        return serialized_token
+
+    def __str__(self):
+        return f'username: {self.username}'
 
 
 class Employee(db.Model):

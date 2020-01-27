@@ -19,7 +19,6 @@ def create_app(test_config=None):
     logging.basicConfig(filename='SampleApp/logs/app.log', filemode='w', level=logging.DEBUG, format='[%(asctime)s] - [%(levelname)s] - %(message)s')
     logging.debug("Application started")
 
-
     DB_USER = 'postgres'
     DB_PASSWORD = '123'
     DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@localhost/projekt_test'
@@ -35,14 +34,15 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
-
     db_init(app)
-
 
     from SampleApp.API import employee, salary, address
     app.register_blueprint(employee.bp)
     app.register_blueprint(salary.bp)
     app.register_blueprint(address.bp)
+
+    from SampleApp.API import login
+    app.register_blueprint(login.bp)
 
     login_manager_init(app)
 
@@ -55,6 +55,7 @@ def create_app(test_config=None):
 
 def db_init(app):
     print('db_init')
+    import SampleApp.DataManagement
     db.app = app
     db.init_app(app)
     db.create_all()

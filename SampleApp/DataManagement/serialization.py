@@ -11,7 +11,8 @@ class UserSchema(Schema):
 
     @post_load
     def make_user(self, data, **kwargs):
-        return Employee(**data)
+
+        return User(**data)
 
 
 class EmployeeSchema(Schema):
