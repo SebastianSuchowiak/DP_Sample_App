@@ -34,31 +34,43 @@ class SQLinterceptor():
       __table_args__ = {'extend_existing': True} 
       parent_role = db.Column(db.String)
       child_role = db.Column(db.String, primary_key=False, unique=True, nullable=False)      
-      tag = db.Column(db.String, unique = True, nullable = False,primary_key=True)
-    
-    #ACL.insert().values=(1,1,"0.0","employee")
-    #db.session.add(ACL(id_row=2,role="0.0",tablename="employee"))
-    if(tree_file):      
+      tag = db.Column(db.String, unique = True, nullable = False, primary_key=True)
+    db.create_all()
+    self.roles = Roles
+    if(tree_file):    
       self.tree = tree_from_file(tree_file)
       self.tree.generate_tag()
+      #db.session.query(Roles).delete()
+      self.insert_tree_todb(self.tree)
+      #a = (self.roles.query.values(self.roles.parent_role,self.roles.child_role,self.roles.tag))
+      self.tree_from_db()
+      #self.db.session.commit()
     else:
-      roles = Roles.query.all()
-      print(roles)
-    session = LocalProxy(partial(_lookup_req_object, "session"))
-    db.session.add(Roles(child_role = "gsdg",parent_role="eg",tag="53te"))
+      self.tree_from_db()
+       
     
-    num_rows_deleted = db.session.query(Roles).delete()
     db.session.commit()
     
     self.select_user("Role2")
     self.acl = ACL
+    self.insert_to_acl()
+    
+  def insert_to_acl(self):
+    self.db.session.add(self.acl(id_row=2,role=".0.1",tablename="employee"))
+    self.db.session.commit()
+    print("ACLCLLCALCLA")
+    #print(self.acl.query.values(self.roles.parent_role,self.roles.child_role,self.roles.tag))
+    
   def tree_from_db(self):
-    roles = self.Roles.query.all()
+    a = self.roles.query.all()
+    self.db.session.commit()
+    print(a)
 
   def insert_tree_todb(self,tree):
     for node in tree.nodes:
-      self.db.session.add(Roles(child_role = node.name,parent_role=tree.name,tag=node.tag))
-      insert_tree_todb(node)
+      print(node.name + "  " + tree.name + "   " + node.tag)
+      self.db.session.add(self.roles(child_role = node.name,parent_role=tree.name,tag=node.tag))
+      #self.insert_tree_todb(node)
 
   def select_user(self,role_name):
     global curent_user
@@ -69,10 +81,11 @@ class SQLinterceptor():
   def before_cursor_execute(conn, cursor, statement, parameters, context, executemany):
     print(f"{statement} {parameters}   {context}")
     tables_from = re.search("FROM.*",str(statement))
-    if tables_from and statement[:6] == "SELECT":
+    if tables_from and statement[:6] == "SELECT" and curent_user:
       tables_from = str(tables_from[0][5:])
       if tables_from != "roles":
         user_role = curent_user.tag
+        print(user_role)
         statement = statement + " where " + tables_from + """.id in ( SELECT acl.id_row from acl where acl.role ilike '""" + user_role + """%%' and acl.tablename  = '""" + tables_from +"""' )"""
         print(statement)
     return statement, parameters

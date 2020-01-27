@@ -56,6 +56,7 @@ class AclTree:
         for i in range(len(self.nodes)):
             self.nodes[i].set_tag(self.tag,str(i))
 
+
 def tree_from_string(table):
   tree_root = AclTree([],"")
   for line in table.splitlines():
