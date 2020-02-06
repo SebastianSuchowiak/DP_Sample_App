@@ -1,5 +1,7 @@
 import json
 
+from flask_login import login_required
+
 from SampleApp.DataManagement.db import Address
 from SampleApp.DataManagement.serialization import AddressSchema
 from SampleApp.DataManagement.db import db
@@ -13,6 +15,7 @@ bp = Blueprint('address', __name__, url_prefix='/address')
 
 
 @bp.route('/add_address', methods=['POST'])
+@login_required
 def add_address():
     logging.debug('add_address()\nInput JSON: {}'.format(request.json))
 
@@ -36,6 +39,7 @@ def add_address():
 
 
 @bp.route('/addresses', methods=['GET'])
+@login_required
 def get_addresses():
     logging.debug("get_addresses()")
 
@@ -45,6 +49,7 @@ def get_addresses():
 
 
 @bp.route('/address/<int:id>', methods=['GET'])
+@login_required
 def get_address(id):
     logging.debug('get_address({})'.format(id))
 

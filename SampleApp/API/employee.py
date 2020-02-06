@@ -12,6 +12,7 @@ bp = Blueprint('employee', __name__, url_prefix='/employee')
 
 
 @bp.route('/add_employee', methods=['POST'])
+@login_required
 def add_employee():
     logging.debug('add_employee()\nInput JSON: {}'.format(request.json))
 
@@ -32,6 +33,7 @@ def get_employees():
 
 
 @bp.route('/employee/<int:id>', methods=['GET'])
+@login_required
 def get_employee(id):
     logging.debug("get_employee({})".format(id))
 

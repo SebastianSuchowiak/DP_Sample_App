@@ -1,3 +1,5 @@
+from flask_login import login_required
+
 from SampleApp.DataManagement.db import Salary
 from SampleApp.DataManagement.serialization import SalarySchema
 from SampleApp.DataManagement.db import db
@@ -12,6 +14,7 @@ bp = Blueprint('salary', __name__, url_prefix='/salary')
 
 
 @bp.route('/add_salary', methods=['POST'])
+@login_required
 def add_salary():
     logging.debug('add_salary()\nInput JSON: {}'.format(request.json))
 
@@ -33,6 +36,7 @@ def add_salary():
 
 
 @bp.route('/salaries', methods=['GET'])
+@login_required
 def get_salaries():
     logging.debug('get_salaries()')
 
@@ -42,6 +46,7 @@ def get_salaries():
 
 
 @bp.route('/salary/<int:id>', methods=['GET'])
+@login_required
 def get_salary(id):
     logging.debug('get_salary({})'.format(id))
 
