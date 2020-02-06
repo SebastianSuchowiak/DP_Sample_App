@@ -69,7 +69,6 @@ def db_init(app):
 
     db.session.commit()
     sqlinterceptor.start(db,tree_file="sampleroles.txt",acl_file="sampleacl.txt")
-    sqlinterceptor.select_user("u1")
     ## run once 
     #sqlinterceptor.assign_role("u1","Role1")
 
