@@ -56,11 +56,15 @@ def create_app(test_config=None):
 def db_init(app):
     print('db_init')
     import SampleApp.DataManagement
+    from SampleApp.DataManagement.db import User
     db.app = app
     db.init_app(app)
     db.create_all()
     db.session.commit()
-    sqlinterceptor.start(db,tree_file="sampleroles.txt")
+    sqlinterceptor.start(db,tree_file="sampleroles.txt",acl_file="sampleacl.txt")
+    sqlinterceptor.select_user("u1")
+    ## run once 
+    #sqlinterceptor.assign_role("u1","Role1")
 
 def login_manager_init(app):
     print('login_manager_init')
