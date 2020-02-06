@@ -65,6 +65,7 @@ def tree_from_string(table):
       tree_root.add_role(roles[0])
     else:
       tree_root.add_child_role(roles[0],roles[1])
+  tree_root.print_tree()
   return tree_root
 
 def tree_from_file(filename):
