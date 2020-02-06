@@ -1,9 +1,11 @@
+import json
+
 from SampleApp.DataManagement.db import Address
 from SampleApp.DataManagement.serialization import AddressSchema
 from SampleApp.DataManagement.db import db
 from flask import (
-    Blueprint, request, jsonify
-)
+    Blueprint, request, jsonify,
+    Response)
 import logging
 
 
@@ -14,7 +16,9 @@ bp = Blueprint('address', __name__, url_prefix='/address')
 def add_address():
     logging.debug('add_address()\nInput JSON: {}'.format(request.json))
 
+    new_address = AddressSchema().load(request.json)
     db.session.add(new_address)
+
     try:
         db.session.commit()
     except Exception:

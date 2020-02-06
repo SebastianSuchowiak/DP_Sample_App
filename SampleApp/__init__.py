@@ -1,9 +1,10 @@
+import logging
+import os
+
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from acl_orm.SQLinterceptor import SQLinterceptor
-
-
 
 
 db = SQLAlchemy()
@@ -21,7 +22,7 @@ def create_app(test_config=None):
 
     DB_USER = 'postgres'
     DB_PASSWORD = '123'
-    DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@localhost/projekt_test'
+    DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@localhost/projekt_test3'
 
     app.config.from_mapping(
         SECRET_KEY='dev',
@@ -55,13 +56,28 @@ def create_app(test_config=None):
 
 def db_init(app):
     print('db_init')
-    import SampleApp.DataManagement
     db.app = app
     db.init_app(app)
+
+    import SampleApp.DataManagement.db
+
+
     db.create_all()
+    clear_data()
+    from SampleApp.populate.populate import populate_employees
+    populate_employees(db, 100)
+
     db.session.commit()
     sqlinterceptor.start(db,tree_file="sampleroles.txt")
 
 def login_manager_init(app):
     print('login_manager_init')
     login_manager.init_app(app)
+
+
+def clear_data():
+    meta = db.metadata
+    for table in reversed(meta.sorted_tables):
+        print('Clear table %s' % table)
+        db.session.execute(table.delete())
+    db.session.commit()

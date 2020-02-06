@@ -15,10 +15,7 @@ bp = Blueprint('salary', __name__, url_prefix='/salary')
 def add_salary():
     logging.debug('add_salary()\nInput JSON: {}'.format(request.json))
 
-
     new_salary = SalarySchema().load(request.json)
-
-
     db.session.add(new_salary)
 
     try:

@@ -13,7 +13,6 @@ bp = Blueprint('employee', __name__, url_prefix='/employee')
 
 @bp.route('/add_employee', methods=['POST'])
 def add_employee():
-    print(request.headers)
     logging.debug('add_employee()\nInput JSON: {}'.format(request.json))
 
     new_employee = EmployeeSchema().load(request.json)

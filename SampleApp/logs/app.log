@@ -1,2 +1,40 @@
-[2020-01-24 14:54:04,838] - [DEBUG] - Application started
-[2020-01-24 14:54:19,311] - [INFO] - 127.0.0.1 - - [24/Jan/2020 14:54:19] "GET /employee/employees HTTP/1.1" 401 -
+[2020-01-25 08:14:26,498] - [DEBUG] - Application started
+[2020-01-25 08:14:26,590] - [DEBUG] - Not in REPL -> leaving logger event level as is.
+[2020-01-25 08:14:26,591] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.address`.
+[2020-01-25 08:14:26,593] - [DEBUG] - Provider `faker.providers.address` has been localized to `pl_PL`.
+[2020-01-25 08:14:26,593] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.automotive`.
+[2020-01-25 08:14:26,594] - [DEBUG] - Provider `faker.providers.automotive` has been localized to `pl_PL`.
+[2020-01-25 08:14:26,594] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.bank`.
+[2020-01-25 08:14:26,595] - [DEBUG] - Provider `faker.providers.bank` has been localized to `pl_PL`.
+[2020-01-25 08:14:26,595] - [DEBUG] - Provider `faker.providers.barcode` does not feature localization. Specified locale `pl_PL` is not utilized for this provider.
+[2020-01-25 08:14:26,596] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.color`.
+[2020-01-25 08:14:26,596] - [DEBUG] - Specified locale `pl_PL` is not available for provider `faker.providers.color`. Locale reset to `en_US` for this provider.
+[2020-01-25 08:14:26,596] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.company`.
+[2020-01-25 08:14:26,597] - [DEBUG] - Provider `faker.providers.company` has been localized to `pl_PL`.
+[2020-01-25 08:14:26,598] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.credit_card`.
+[2020-01-25 08:14:26,598] - [DEBUG] - Specified locale `pl_PL` is not available for provider `faker.providers.credit_card`. Locale reset to `en_US` for this provider.
+[2020-01-25 08:14:26,599] - [DEBUG] - Provider `faker.providers.currency` does not feature localization. Specified locale `pl_PL` is not utilized for this provider.
+[2020-01-25 08:14:26,599] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.date_time`.
+[2020-01-25 08:14:26,600] - [DEBUG] - Provider `faker.providers.date_time` has been localized to `pl_PL`.
+[2020-01-25 08:14:26,600] - [DEBUG] - Provider `faker.providers.file` does not feature localization. Specified locale `pl_PL` is not utilized for this provider.
+[2020-01-25 08:14:26,600] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.geo`.
+[2020-01-25 08:14:26,601] - [DEBUG] - Specified locale `pl_PL` is not available for provider `faker.providers.geo`. Locale reset to `en_US` for this provider.
+[2020-01-25 08:14:26,601] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.internet`.
+[2020-01-25 08:14:26,602] - [DEBUG] - Provider `faker.providers.internet` has been localized to `pl_PL`.
+[2020-01-25 08:14:26,603] - [DEBUG] - Provider `faker.providers.isbn` does not feature localization. Specified locale `pl_PL` is not utilized for this provider.
+[2020-01-25 08:14:26,603] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.job`.
+[2020-01-25 08:14:26,604] - [DEBUG] - Provider `faker.providers.job` has been localized to `pl_PL`.
+[2020-01-25 08:14:26,604] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.lorem`.
+[2020-01-25 08:14:26,606] - [DEBUG] - Provider `faker.providers.lorem` has been localized to `pl_PL`.
+[2020-01-25 08:14:26,607] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.misc`.
+[2020-01-25 08:14:26,608] - [DEBUG] - Specified locale `pl_PL` is not available for provider `faker.providers.misc`. Locale reset to `en_US` for this provider.
+[2020-01-25 08:14:26,608] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.person`.
+[2020-01-25 08:14:26,610] - [DEBUG] - Provider `faker.providers.person` has been localized to `pl_PL`.
+[2020-01-25 08:14:26,611] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.phone_number`.
+[2020-01-25 08:14:26,613] - [DEBUG] - Provider `faker.providers.phone_number` has been localized to `pl_PL`.
+[2020-01-25 08:14:26,613] - [DEBUG] - Provider `faker.providers.profile` does not feature localization. Specified locale `pl_PL` is not utilized for this provider.
+[2020-01-25 08:14:26,613] - [DEBUG] - Provider `faker.providers.python` does not feature localization. Specified locale `pl_PL` is not utilized for this provider.
+[2020-01-25 08:14:26,613] - [DEBUG] - Looking for locale `pl_PL` in provider `faker.providers.ssn`.
+[2020-01-25 08:14:26,615] - [DEBUG] - Provider `faker.providers.ssn` has been localized to `pl_PL`.
+[2020-01-25 08:14:26,616] - [DEBUG] - Provider `faker.providers.user_agent` does not feature localization. Specified locale `pl_PL` is not utilized for this provider.
+[2020-01-25 08:14:53,204] - [INFO] - 127.0.0.1 - - [25/Jan/2020 08:14:53] "POST /employee/add_employee HTTP/1.1" 500 -

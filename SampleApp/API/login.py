@@ -47,7 +47,6 @@ def login():
 
 @bp.route('/register', methods=['POST'])
 def register():
-    print(request.json)
     username = request.json['username']
 
     user = User.query.filter_by(username=username).first()
@@ -87,7 +86,6 @@ def logout():
 @login_manager.user_loader
 def load_user(token):
 
-    print(token)
     serializer = URLSafeSerializer('secret-key')
     serialized_token = serializer.loads(token)
 
@@ -107,11 +105,9 @@ def load_user(token):
 
 @login_manager.unauthorized_handler
 def unauthorized():
-    ses = LocalProxy(partial(_lookup_req_object, "session"))
-    print(ses['failed_authentication_cause'])
     message = f'failed to authorize: {session["failed_authentication_cause"]}'
     return Response(
-            response=json.dumps({'message': 'token expired'}),
+            response=json.dumps({'message': message}),
             status=401,
             mimetype='application/json'
         )
