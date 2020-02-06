@@ -58,12 +58,7 @@ class SQLinterceptor():
     
     db.session.commit()
     
-<<<<<<< HEAD
     self.select_user("none")
-=======
-    #self.select_user("u1")
-    self.insert_to_acl()
->>>>>>> 60713e05f000e5a70ea510b4fb43738e68fee22e
 
   def assign_role(self,username,role):
     self.db.session.add(self.user_roles(username = username,role=role))
@@ -78,6 +73,10 @@ class SQLinterceptor():
     a = self.roles.query.all()
     self.db.session.commit()
     print(a)
+
+  def add_role(self,role,parent):
+    self.tree.add_child_role(role,parent)
+    self.tree.generate_tag()
 
   def insert_tree_todb(self,tree):
     for node in tree.nodes:
