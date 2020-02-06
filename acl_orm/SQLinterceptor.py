@@ -35,16 +35,10 @@ class SQLinterceptor():
       __table_args__ = {'extend_existing': True} 
       parent_role = db.Column(db.String)
       child_role = db.Column(db.String, primary_key=False, unique=True, nullable=False)      
-      tag = db.Column(db.String, unique = True, nullable = False, primary_key=True)
-    class UserRoles(db.Model):
-      __tablename__ = 'user-roles'
-      __table_args__ = {'extend_existing': True} 
-      username = db.Column(db.String, primary_key=True,unique=True,nullable=False)
-      role = db.Column(db.String, nullable=False)      
+      tag = db.Column(db.String, unique = True, nullable = False, primary_key=True)    
     db.create_all()
     self.acl = ACL
     self.roles = Roles
-    self.user_roles = UserRoles
     #if we pass the file tree in db gets overwritten
     if(tree_file):    
       self.tree = tree_from_file(tree_file)
@@ -64,17 +58,15 @@ class SQLinterceptor():
     
     db.session.commit()
     
-    self.select_user("Role2")
-    self.insert_to_acl()
+    self.select_user("none")
 
   def assign_role(self,username,role):
     self.db.session.add(self.user_roles(username = username,role=role))
     self.db.session.commit()
 
-  def insert_to_acl(self):
-    self.db.session.add(self.acl(id_row=2,role=".0.1",tablename="employee"))
+  def insert_to_acl(self,id_row,role,tablename):
+    self.db.session.add(self.acl(id_row=id_row,role=role,tablename=tablename))
     self.db.session.commit()
-    print("ACLCLLCALCLA")
     #print(self.acl.query.values(self.roles.parent_role,self.roles.child_role,self.roles.tag))
     
   def tree_from_db(self):
@@ -93,15 +85,17 @@ class SQLinterceptor():
         data = file.read()
       for line in data.splitlines():
         values = line.split(" ")
-        self.db.session.add(self.acl(id_row=int(values[0]),role=values[1],tablename=values[2]))
+        self.db.session.add(self.acl(id_row=int(values[0]),role=self.tree.find_role(values[1]).tag,tablename=values[2]))
       self.db.session.commit()
 
-  def select_user(self,username):
+  def select_user(self,role_name):
     global curent_user
-    query = self.db.session.query(self.user_roles).filter(username == username).first()
-    role_name = query.role
-    print(">>>>>>>>" + role_name)
+    #query = self.db.session.query(self.user_roles).filter(username == username).first()
+    #role_name = query.role
     curent_user = self.tree.find_role(role_name)
+    if not curent_user:
+      curent_user = AclTree([],'')
+      curent_user.tag = 'none'
     #print(self.acl.query.values(self.roles.parent_role,self.roles.child_role,self.roles.tag))
       
             
@@ -120,7 +114,6 @@ class SQLinterceptor():
       cut_table_name = tables_from[1:-2]
 
       if cut_table_name not in excluded_tables and tables_from not in excluded_tables:
-        print(">>>>>>>>>>>>>>>>>"+cut_table_name+"<<<<<")
         user_role = curent_user.tag
         print(user_role)
         statement = statement + " where " + tables_from + """.id in ( SELECT acl.id_row from acl where acl.role ilike '""" + user_role + """%%' and acl.tablename  = '""" + tables_from +"""' )"""
