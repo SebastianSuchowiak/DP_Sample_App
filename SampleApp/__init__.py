@@ -71,6 +71,8 @@ def db_init(app):
     sqlinterceptor.start(db,tree_file="sampleroles.txt",acl_file="sampleacl.txt")
     ## run once 
     #sqlinterceptor.assign_role("u1","Role1")
+    sqlinterceptor.select_user("u1")
+
 
 def login_manager_init(app):
     print('login_manager_init')

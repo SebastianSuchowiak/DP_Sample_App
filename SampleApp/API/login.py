@@ -1,10 +1,7 @@
 import json
-from functools import partial
 
-from flask.globals import _lookup_req_object
 from flask_login import login_user, login_required, logout_user
 from itsdangerous import TimestampSigner, BadSignature, URLSafeSerializer, SignatureExpired
-from werkzeug.local import LocalProxy
 
 from SampleApp.DataManagement.db import User
 from SampleApp import db, login_manager
@@ -91,7 +88,7 @@ def load_user(token):
 
     signer = TimestampSigner('secret-key')
     try:
-        username = signer.unsign(serialized_token, max_age=10)
+        username = signer.unsign(serialized_token, max_age=1000)
     except SignatureExpired:
         session['failed_authentication_cause'] = 'token expired'
         return None
