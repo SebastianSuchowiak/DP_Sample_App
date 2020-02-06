@@ -80,4 +80,5 @@ def clear_data():
     for table in reversed(meta.sorted_tables):
         print('Clear table %s' % table)
         db.session.execute(table.delete())
+    db.session.execute('ALTER SEQUENCE employee_id_seq RESTART WITH 1')
     db.session.commit()
