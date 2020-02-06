@@ -77,6 +77,9 @@ class SQLinterceptor():
   def add_role(self,role,parent):
     self.tree.add_child_role(role,parent)
     self.tree.generate_tag()
+    db.session.query(self.Roles).delete()
+    self.insert_tree_todb(self.tree):
+
 
   def insert_tree_todb(self,tree):
     for node in tree.nodes:
