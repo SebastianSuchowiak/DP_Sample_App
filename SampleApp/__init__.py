@@ -68,10 +68,11 @@ def db_init(app):
     populate_employees(db, 100)
 
     db.session.commit()
-    sqlinterceptor.start(db,tree_file="sampleroles.txt",acl_file="sampleacl.txt")
-    sqlinterceptor.select_user("u1")
-    ## run once 
+    sqlinterceptor.start(db,tree_file="/home/sebastian/PycharmProjects/backend/SampleApp/sampleroles.txt",acl_file="/home/sebastian/PycharmProjects/backend/SampleApp/sampleacl.txt")
+    ## run once
     #sqlinterceptor.assign_role("u1","Role1")
+    sqlinterceptor.select_user("u1")
+
 
 def login_manager_init(app):
     print('login_manager_init')

@@ -19,7 +19,8 @@ def add_employee():
     new_employee = EmployeeSchema().load(request.json)
     db.session.add(new_employee)
     db.session.commit()
-    return {'id': new_employee.id}
+
+    return {}
 
 
 @bp.route('/employees', methods=['GET'])

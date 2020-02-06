@@ -64,7 +64,7 @@ class SQLinterceptor():
     
     db.session.commit()
     
-    self.select_user("Role2")
+    #self.select_user("u1")
     self.insert_to_acl()
 
   def assign_role(self,username,role):
@@ -112,8 +112,8 @@ class SQLinterceptor():
     print(f"{statement} {parameters}   {context}")
     tables_from = re.search("FROM.*",str(statement))
     where_statement = re.search("WHERE",str(statement))
-    if where_statement:
-      return statement, parameters
+    #if where_statement:
+    #  return statement, parameters
 
     if tables_from and statement[:6] == "SELECT" and curent_user:
       tables_from = str(tables_from[0][5:])
@@ -123,6 +123,9 @@ class SQLinterceptor():
         print(">>>>>>>>>>>>>>>>>"+cut_table_name+"<<<<<")
         user_role = curent_user.tag
         print(user_role)
-        statement = statement + " where " + tables_from + """.id in ( SELECT acl.id_row from acl where acl.role ilike '""" + user_role + """%%' and acl.tablename  = '""" + tables_from +"""' )"""
+        if where_statement:
+          statement = statement + " and " + tables_from[:-1] + """.id in ( SELECT acl.id_row from acl where acl.role ilike '""" + user_role + """%%' and acl.tablename  = '""" + tables_from[:-1] + """' )"""
+        else:
+          statement = statement + " where " + tables_from + """.id in ( SELECT acl.id_row from acl where acl.role ilike '""" + user_role + """%%' and acl.tablename  = '""" + tables_from +"""' )"""
         print(statement)
     return statement, parameters
